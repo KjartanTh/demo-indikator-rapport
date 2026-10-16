@@ -150,6 +150,19 @@ img { max-width: 100%; height: auto; }
   align-self: start;
 }
 
+/* Skiljelinje mellan inledningen och indikatorerna: 70 % bred och centrerad,
+   ovanför det första indikatorrutnätet på sidan (inte före följande rutnät) */
+.grid:not(.grid ~ .grid)::before {
+  content: "";
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 70%;
+  height: 3px;
+  border-radius: 3px;
+  margin: .75rem 0 .5rem;
+  background: #d6c3ce;
+}
+
 .indicator-card {
   background: #fff;
   border: 1px solid var(--border);
@@ -300,9 +313,189 @@ img { max-width: 100%; height: auto; }
 .kpi-ned     { color: #c0392b; }
 .kpi-neutral { color: var(--muted); }
 
+/* ==== PRICKDIAGRAM (små antal, se plot_prickar()) ==== */
+.prickdiagram { margin: .25rem 0 .5rem; }
+.pr-rad {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 3rem;
+  align-items: center;
+  gap: .75rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.pr-huvud {
+  padding-top: 0;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+.pr-ar { font-weight: 700; }
+.pr-antal { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pr-huvud .pr-ar, .pr-huvud .pr-antal { font-weight: 700; }
+.pr-prickar { display: flex; flex-wrap: wrap; gap: .35rem; min-height: 1rem; }
+.pr-prick {
+  display: inline-block;
+  width: .95rem;
+  height: .95rem;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: .55;
+}
+.pr-prick.pr-markerad { background: var(--accent); opacity: 1; }
+.pr-noll { font-size: .82rem; color: var(--muted); font-style: italic; }
+.pr-forklaring {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.25rem;
+  margin-top: .6rem;
+  font-size: .78rem;
+  color: var(--muted);
+}
+.pr-forklaring > span { display: inline-flex; align-items: center; gap: .35rem; }
+.pr-forklaring .pr-prick { width: .7rem; height: .7rem; }
+.pr-enhet { margin-left: auto; }
+
+/* ==== TEXTKORT (mål utan indikatorer) ==== */
+/* Endast text – stänger av graf/text-uppdelningen i indicator-card */
+.indicator-card.kort-text { display: block; }
+.indicator-card.kort-text::before { display: none; }
+.kort-text p { max-width: 70ch; }
+
+/* ==== BEDÖMNINGSKORT (kvalitativa indikatorer, se bedomning_box()) ==== */
+/* Kortet staplar allt i en kolumn i stället för graf/text-uppdelningen */
+.indicator-card.kort-bedomning { display: block; }
+.indicator-card.kort-bedomning::before { display: none; }
+.kort-bedomning .bed-intro p { margin: 0 0 .75rem; }
+
+/* År till vänster (som grafens plats), text + bedömning till höger */
+.bed-hist {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  column-gap: 1.5rem;
+}
+.bed-ar {
+  border-right: 1px solid var(--border);
+  padding-right: 1rem;
+  gap: .35rem;
+}
+.bed-ar .nav-link {
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--muted);
+  background: transparent;
+  border-left: 3px solid transparent;
+  border-radius: 0 6px 6px 0;
+  padding: .35rem .6rem;
+}
+.bed-ar .nav-link:hover { color: var(--accent); }
+.bed-ar .nav-link.active {
+  color: var(--accent);
+  background: var(--bg-soft);
+  border-left-color: var(--accent);
+}
+.bed-innehall { min-width: 0; }
+.bed-citat { margin: 0 0 .5rem; }
+.bed-citat blockquote {
+  margin: 0;
+  padding: .6rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-page);
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+  font-size: inherit;   /* Bootstraps .blockquote förstorar annars texten */
+}
+.bed-citat blockquote p { margin: 0 0 .5rem; }
+.bed-citat blockquote p:last-child { margin-bottom: 0; }
+.bed-innehall .bedomning { margin-top: .25rem; }
+
+/* Mobil: åren som en rad ovanför innehållet */
+@media (max-width: 575.98px) {
+  .bed-hist { grid-template-columns: 1fr; row-gap: .75rem; }
+  .bed-ar {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0 0 .5rem;
+  }
+  .bed-ar .bed-rubrik { margin: 0 .5rem 0 0; }
+  .bed-ar .nav-link {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 6px 6px 0 0;
+  }
+  .bed-ar .nav-link.active { border-bottom-color: var(--accent); }
+}
+
+.bedomning {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem 1.5rem;
+  margin: 1rem 0 .5rem;
+}
+.bed-rubrik {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: .4rem;
+}
+.bed-ruta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1rem;
+  border-radius: 8px;
+  border-left: 5px solid var(--bed-farg);
+  background: var(--bg-page);
+  font-weight: 700;
+}
+.bed-ikon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--bed-farg);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.bed-text { color: var(--text); }
+.bed-bra    { --bed-farg: #1a7a4a; }
+.bed-mellan { --bed-farg: #b7860b; }
+.bed-dalig  { --bed-farg: #c0392b; }
+.bed-oklar  { --bed-farg: #6b6b6b; }
+.kort-bedomning .bed-kalla {
+  font-size: .78rem;
+  color: var(--muted);
+  margin: .75rem 0 0;
+}
+
 /* ── Rapportkort ──────────────────────────────────────────────────────────── */
 .rapport-sektion {
-  margin: .75rem 0 1.25rem;
+  /* Ljus yta som skiljer rapporterna (extramaterial) från inledningstexten */
+  margin: 1.5rem 0 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-page);
+  border-radius: var(--radius);
+}
+/* Två spalter: rubrik + kort text till vänster, rapportkorten till höger */
+@media (min-width: 768px) {
+  .rapport-sektion {
+    display: grid;
+    /* Smal textspalt med fast bredd, rapportkorten direkt till höger om den */
+    grid-template-columns: 15rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+    align-items: center;
+  }
 }
 
 .rapport-sektion-rubrik {
@@ -312,6 +505,16 @@ img { max-width: 100%; height: auto; }
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: .5rem;
+}
+.rapport-sektion-text {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0 0 .75rem;
+  max-width: 34ch;
+}
+@media (min-width: 768px) {
+  .rapport-sektion-text { margin-bottom: 0; }
 }
 
 .rapport-rad {
@@ -533,5 +736,72 @@ img { max-width: 100%; height: auto; }
 .quarto-grid,
 div.grid {
   align-items: start !important;
+}
+
+/* ==== BLÄDDRA MELLAN MÅL (se mal-nav.html) ==== */
+/* Osynliga klickytor längs sidans kanter; pilen tonas fram vid hover */
+.mal-nav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  z-index: 1020;              /* under navbaren (1030) så att menyerna ligger överst */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--accent);
+}
+.mal-nav-prev { left: 0; }
+.mal-nav-next { right: 0; }
+
+.mal-nav-knapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  padding: .7rem .45rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .75);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+  opacity: 0;
+  transform: translateX(var(--mal-nav-skift, 0));
+  transition: opacity .2s ease, transform .2s ease;
+}
+.mal-nav-prev { --mal-nav-skift: -6px; }
+.mal-nav-next { --mal-nav-skift: 6px; }
+.mal-nav:hover .mal-nav-knapp,
+.mal-nav:focus-visible .mal-nav-knapp {
+  opacity: .85;
+  transform: translateX(0);
+}
+.mal-nav:focus-visible { outline: none; }
+.mal-nav:focus-visible .mal-nav-knapp { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.mal-nav svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mal-nav-etikett {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  writing-mode: vertical-rl;   /* stående text så att knappen hålls smal */
+  transform: rotate(180deg);
+}
+.mal-nav-next .mal-nav-etikett { transform: none; }
+
+/* Smala fönster: kanterna ligger då över innehållet – visa inte ytorna */
+@media (max-width: 991.98px) {
+  .mal-nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mal-nav-knapp { transition: none; transform: none; }
 }
 
