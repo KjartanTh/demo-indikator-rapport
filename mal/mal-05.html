@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.7.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -32,15 +32,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de070a7b0ab54f8780927367ac907214.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ab3bba1e32e51f497432a940e6c5a7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7e545e4864bd82b10f73a18c2ec672a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,21 +68,13 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-
 <script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-
 <link href="../site_libs/ggiraphjs-0.9.4/girafe.css" rel="stylesheet">
-
 <script src="../site_libs/ggiraphjs-0.9.4/girafe.js"></script>
-
 <script src="../site_libs/girafe-binding-0.9.6/girafe.js"></script>
-
 <link href="../site_libs/liberation-sans-0.5.0/css/liberation-sans.css" rel="stylesheet">
-
 <link href="../site_libs/liberation-serif-0.5.0/css/liberation-serif.css" rel="stylesheet">
-
 <link href="../site_libs/liberation-mono-0.5.0/css/liberation-mono.css" rel="stylesheet">
-
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -97,8 +88,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../logo/Region Uppsala_Logo_CMYK_Vit.png" alt="" class="navbar-logo light-content">
-    <img src="../logo/Region Uppsala_Logo_CMYK_Vit.png" alt="" class="navbar-logo dark-content">
+    <img src="../logo/Region Uppsala_Logo_CMYK_Vit.png" alt="" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -429,125 +419,65 @@ ul.task-list li input[type="checkbox"] {
 
 </main> <!-- /main -->
 <!--
-
   Bläddra mellan målen (som ett bildgalleri): diskreta klickytor längs vänster
-
-  och höger kant på målsidorna. Pilen tonas fram när musen närmar sig kanten.
-
+  och höger kant på målsidorna. Pilen syns alltid svagt och blir tydligare när musen närmar sig kanten.
   Ordningen läses från navbarens dropdown-menyer, så den följer _quarto.yml.
-
   Inkluderas på alla sidor via include-after-body i _quarto.yml.
-
 -->
-
 <script>
-
 (function () {
-
   // Bara på målsidor (mal/mal-XX.html)
-
   var MAL_RE = /\/mal\/mal-\d+\.html$/;
-
   var har = function (url) { return url.split(/[?#]/)[0]; };
-
   var aktuell = har(window.location.href);
-
   if (!MAL_RE.test(aktuell)) return;
 
-
-
   // Pekskärmar saknar hover – där skulle osynliga kantytor ge oavsiktliga klick
-
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
-
-
   // Målen i navbarens ordning, utan dubbletter
-
   var sidor = [];
-
   document.querySelectorAll(".navbar .dropdown-menu a.dropdown-item").forEach(function (a) {
-
     var url = har(a.href);
-
     if (MAL_RE.test(url) && !sidor.some(function (s) { return s.url === url; })) {
-
       // "Mål 2: Öka ..." → "Mål 2"
-
       var namn = a.textContent.trim();
-
       sidor.push({ url: url, kort: namn.split(":")[0], namn: namn });
-
     }
-
   });
-
-
 
   var i = sidor.findIndex(function (s) { return s.url === aktuell; });
-
   if (i === -1) return;
 
-
-
   var pilVanster = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
-
   var pilHoger   = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
 
-
-
   function skapa(sida, riktning) {
-
     var a = document.createElement("a");
-
     a.className = "mal-nav mal-nav-" + riktning;
-
     a.href = sida.url;
-
     a.title = (riktning === "prev" ? "Föregående: " : "Nästa: ") + sida.namn;
-
     a.setAttribute("aria-label", a.title);
-
     a.innerHTML =
-
       '<span class="mal-nav-knapp">' + (riktning === "prev" ? pilVanster : pilHoger) +
-
       '<span class="mal-nav-etikett">' + sida.kort + "</span></span>";
-
     document.body.appendChild(a);
-
     return a;
-
   }
 
-
-
   var prev = i > 0 ? skapa(sidor[i - 1], "prev") : null;
-
   var next = i < sidor.length - 1 ? skapa(sidor[i + 1], "next") : null;
 
-
-
   // Piltangenter ← →, men inte när man skriver eller står i en flik/knapp
-
   document.addEventListener("keydown", function (e) {
-
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-
     var t = e.target;
-
     if (t.closest && t.closest("input, textarea, select, [contenteditable], [role=tab], [role=tablist], button")) return;
-
     if (e.key === "ArrowLeft" && prev)  window.location.href = prev.href;
-
     if (e.key === "ArrowRight" && next) window.location.href = next.href;
-
   });
-
 })();
-
 </script>
-
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -599,14 +529,13 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
